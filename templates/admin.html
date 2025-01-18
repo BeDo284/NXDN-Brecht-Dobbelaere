@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+<!-- User List Section -->
+<h2>Users</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Admin(y/n)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.admin }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h1>Register</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }} <!-- Bevat CSRF-token -->
+        {{ form.username.label }} {{ form.username(size=30) }}<br>
+        {{ form.password.label }} {{ form.password(size=30) }}<br>
+        {{ form.confirm_password.label }} {{ form.confirm_password(size=30) }}<br>
+        {{ form.admin.label }} {{ form.admin(size=30) }}<br>
+        {{ form.submit() }}
+    </form>
+{% endblock %}

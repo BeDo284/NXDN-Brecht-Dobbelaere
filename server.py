@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from data import *
 from forms import *
@@ -31,17 +31,18 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
     form = RegistrationForm()
     # POST-request
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, password=hashed_password, admin=form.admin.data)
         user.save()
-        return redirect(url_for('login'))
-    # GET-request
-    return render_template('register.html', form=form)
+        return redirect(url_for('admin'))
+
+    users = User.objects.all()
+    return render_template('admin.html', users=users, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

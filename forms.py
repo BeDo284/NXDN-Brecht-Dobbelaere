@@ -43,3 +43,6 @@ class FilterForm(FlaskForm):
     )
     submit = SubmitField('Apply Filter')
     export = SubmitField('Export data')
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField('Delete')
