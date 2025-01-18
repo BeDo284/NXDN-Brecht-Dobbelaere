@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>Missing IDs</title>
+    <style>
+        h1 {
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 2px solid #000; /* Outer grid lines */
+        }
+        th, td {
+            border: 1px solid #000; /* Grid lines for cells */
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+<body>
+    <h1>Missing IDs</h1>
+    {% if missing_ids %}
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="20">Missing IDs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in missing_ids|batch(20) %}
+                    <tr>
+                        {% for id in row %}
+                            <td>{{ id }}</td>
+                        {% endfor %}
+                        {% for _ in range(10 - row|length) %}
+                            <td></td> <!-- Fill empty cells for incomplete rows -->
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No missing IDs found.</p>
+    {% endif %}
+</body>
+{% endblock %}

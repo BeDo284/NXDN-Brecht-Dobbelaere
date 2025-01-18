@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section>
+    <h1>Welcome{{ ", " + current_user.username if current_user.is_authenticated else "" }}!</h1>
+    {% if not current_user.is_authenticated %}
+        <p>Welcome to Nexedge analytics! Please <a href="{{ url_for('login') }}">log in</a> to get started.</p>
+    {% endif %}
+
+
+</section>
+{% endblock %}

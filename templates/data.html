@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 style="text-align: center;">Logs</h1>
+    <form method="POST" style="text-align: center; margin-bottom: 20px;">
+        {{ form_data.hidden_tag() }}
+        {{ form_data.start_date.label }} {{ form_data.start_date }}
+        {{ form_data.end_date.label }} {{ form_data.end_date }}
+        {{ form_data.calling_id.label }} {{ form_data.calling_id }}
+        {{ form_data.called_id.label }} {{ form_data.called_id }}
+        {{ form_data.site.label }} {{ form_data.site }}
+        <button type="submit" name="submit">Apply Filters</button>
+        <button type="submit" name="export">Export data</button>
+    </form>
+
+    {% if form_data.start_date.data or form_data.end_date.data or form_data.calling_id.data or form_data.called_id.data or form_data.site.data %}
+        <!-- Logs Table -->
+        <table style="width: 80%; margin: 20px auto; border-collapse: collapse; border: 1px solid #ddd;">
+            <thead>
+                <tr>
+                    <th>Record Type</th>
+                    <th>Call Type</th>
+                    <th>Emergency</th>
+                    <th>Calling ID</th>
+                    <th>Called ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Talk Time</th>
+                    <th>Cause</th>
+                    <th>Direction</th>
+                    <th>Channel</th>
+                    <th>Site</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.record_type }}</td>
+                    <td>{{ log.call_type }}</td>
+                    <td>{{ log.emergency }}</td>
+                    <td>{{ log.calling_id }}</td>
+                    <td>{{ log.called_id }}</td>
+                    <td>{{ log.date.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ log.time }}</td>
+                    <td>{{ log.talk_time }}</td>
+                    <td>{{ log.cause }}</td>
+                    <td>{{ log.direction }}</td>
+                    <td>{{ log.channel }}</td>
+                    <td>{{ log.site }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="12" style="text-align: center;">No records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div style="text-align: center; margin: 20px 0;">
+            <p>Page {{ page }} of {{ (total_logs + per_page - 1) // per_page }}</p>
+            <div>
+                {% if page > 1 %}
+                    <a href="{{ url_for('data_default', page=page-1) }}" style="margin-right: 10px;">Previous</a>
+                {% endif %}
+                {% if page * per_page < total_logs %}
+                    <a href="{{ url_for('data_default', page=page+1) }}">Next</a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p style="text-align: center;">Please apply filters to view records.</p>
+    {% endif %}
+{% endblock %}

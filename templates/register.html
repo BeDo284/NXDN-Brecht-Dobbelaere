@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Register</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }} <!-- Bevat CSRF-token -->
+        {{ form.username.label }} {{ form.username(size=30) }}<br>
+        {{ form.password.label }} {{ form.password(size=30) }}<br>
+        {{ form.confirm_password.label }} {{ form.confirm_password(size=30) }}<br>
+        {{ form.admin.label }} {{ form.admin(size=30) }}<br>
+        {{ form.submit() }}
+    </form>
+{% endblock %}
